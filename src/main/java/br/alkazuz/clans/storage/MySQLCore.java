@@ -56,6 +56,18 @@ public class MySQLCore implements DBCore {
         try {
             return this.connection.prepareStatement(statement);
         } catch (SQLException ex) {
+            ex.printStackTrace();
+            Clans.debug("Error at creating the statement: " + statement + "(" + ex.getMessage() + ")");
+            return null;
+        }
+    }
+
+    @Override
+    public PreparedStatement prepareStatement(String statement, int paramInt) {
+        try {
+            return this.connection.prepareStatement(statement, paramInt);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
             Clans.debug("Error at creating the statement: " + statement + "(" + ex.getMessage() + ")");
             return null;
         }
@@ -66,6 +78,7 @@ public class MySQLCore implements DBCore {
             if (this.connection != null)
                 this.connection.close();
         } catch (Exception e) {
+            e.printStackTrace();
             Clans.debug("Failed to close database connection! " + e.getMessage());
         }
     }
@@ -74,6 +87,7 @@ public class MySQLCore implements DBCore {
         try {
             return getConnection().createStatement().executeQuery(query);
         } catch (SQLException ex) {
+            ex.printStackTrace();
             Clans.debug("Error at SQL Query: " + ex.getMessage());
             Clans.debug("Query: " + query);
             return null;
@@ -84,6 +98,7 @@ public class MySQLCore implements DBCore {
         try {
             getConnection().createStatement().executeUpdate(query);
         } catch (SQLException ex) {
+            ex.printStackTrace();
             if (!ex.toString().contains("not return ResultSet")) {
                 Clans.debug("Error at SQL INSERT Query: " + ex);
                 Clans.debug("Query: " + query);
@@ -118,6 +133,7 @@ public class MySQLCore implements DBCore {
             getConnection().createStatement().execute(query);
             return Boolean.valueOf(true);
         } catch (SQLException ex) {
+            ex.printStackTrace();
             Clans.debug(ex.getMessage());
             Clans.debug("Query: " + query);
             return Boolean.valueOf(false);

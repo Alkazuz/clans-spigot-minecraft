@@ -24,5 +24,7 @@ public interface DBCore {
 
     PreparedStatement prepareStatement(String paramString);
 
+    PreparedStatement prepareStatement(String paramString, int paramInt);
+
     Boolean existsColumn(String paramString1, String paramString2);
 }

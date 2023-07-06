@@ -1,9 +1,16 @@
 name: Clans
 version: '${version}'
 main: br.alkazuz.clans.Clans
+softdepend:
+  - Vault
+  - Core
 
 commands:
   clans:
     description: Comando principal do plugin
     usage: /clans
     aliases: [clan, cl]
+  cc:
+    description: Comando para enviar mensagem para o clan
+    usage: /cc
+    aliases: [c, .]

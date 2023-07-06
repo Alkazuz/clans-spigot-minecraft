@@ -4,6 +4,8 @@ import br.alkazuz.clans.Clans;
 import br.alkazuz.clans.storage.DBCore;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Timestamp;
 
 public class ClanPlayer {
@@ -30,6 +32,10 @@ public class ClanPlayer {
 
     public Clan getClan() {
         return this.clan;
+    }
+
+    public double getKDR() {
+        return this.deaths == 0 ? this.kills : (this.kills == 0 ? 0.0 : (double)this.kills / (double)this.deaths);
     }
 
     public void setClan(final Clan clan) {
@@ -132,6 +138,11 @@ public class ClanPlayer {
         this.deaths += amount;
     }
 
+    public String getDisplayName() {
+        String tag = String.format("§7[%s%s§7]", clan.getColoredTag(), getRole().getPrefix());
+        return tag + " " + getName();
+    }
+
     public void save() {
         if (this.id == null) {
             this.create();
@@ -153,7 +164,8 @@ public class ClanPlayer {
 
     private void create() {
         DBCore db = Clans.getInstance().database;
-        PreparedStatement st = db.prepareStatement("INSERT INTO `clans_players` (`name`, `clan_id`, `role`, `deaths`, `kills`, `last_online`) VALUES (?, ?, ?, ?, ?, ?)");
+        PreparedStatement st = db.prepareStatement("INSERT INTO `clans_players` (`name`, `clan_id`, `role`, `deaths`, `kills`, `last_online`) VALUES (?, ?, ?, ?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS);
         try {
             st.setString(1, this.name);
             st.setInt(2, this.clan == null ? null : clan.id);
@@ -162,6 +174,10 @@ public class ClanPlayer {
             st.setInt(5, this.kills);
             st.setTimestamp(6, this.lastOnline);
             st.executeUpdate();
+            ResultSet generatedKeys = st.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                id = generatedKeys.getInt(1);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

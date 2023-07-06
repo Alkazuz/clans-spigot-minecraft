@@ -19,7 +19,7 @@ public class SQLiteCore implements DBCore {
     private File file;
 
     public SQLiteCore(String dbLocation) {
-        this.dbName = "SimpleClans";
+        this.dbName = "clans";
         this.dbLocation = dbLocation;
         initialize();
     }
@@ -59,6 +59,17 @@ public class SQLiteCore implements DBCore {
         try {
             return this.connection.prepareStatement(statement);
         } catch (SQLException ex) {
+            Clans.debug("Error at creating the statement: " + statement + "(" + ex.getMessage() + ")");
+            return null;
+        }
+    }
+
+    @Override
+    public PreparedStatement prepareStatement(String statement, int paramInt) {
+        try {
+            return this.connection.prepareStatement(statement, paramInt);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
             Clans.debug("Error at creating the statement: " + statement + "(" + ex.getMessage() + ")");
             return null;
         }

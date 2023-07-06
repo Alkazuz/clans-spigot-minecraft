@@ -1,8 +1,9 @@
 package br.alkazuz.clans.command;
 
-import br.alkazuz.terrenos.command.sub.SubcommandAmigo;
-import br.alkazuz.terrenos.command.sub.SubcommandInfo;
-import br.alkazuz.terrenos.command.sub.SubcommandVender;
+
+import br.alkazuz.clans.command.sub.*;
+import br.alkazuz.clans.command.sub.admin.SubcommandPoints;
+import br.alkazuz.clans.command.sub.admin.SubcommandWarning;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +12,17 @@ public class SubCommands {
     private static final List<SubCommandBase> subCommands = new ArrayList<>();
 
     public static void load() {
-        registerSubCommand(new SubcommandInfo());
-        registerSubCommand(new SubcommandAmigo());
-        registerSubCommand(new SubcommandVender());
+        subCommands.add(new SubcommandCreate());
+        subCommands.add(new SubcommandAccept());
+        subCommands.add(new SubcommandHelp());
+
+        // role
+        subCommands.add(new SubcommandInvite());
+        subCommands.add(new SubcommandKick());
+
+        //admin
+        subCommands.add(new SubcommandWarning());
+        subCommands.add(new SubcommandPoints());
     }
 
     public static List<SubCommandBase> getSubCommands() {
@@ -28,6 +37,13 @@ public class SubCommands {
         for (SubCommandBase subCommandBase : subCommands) {
             if (subCommandBase.getName().equalsIgnoreCase(string)) {
                 return subCommandBase;
+            }
+            if (subCommandBase.getAliases() != null) {
+                for (String alias : subCommandBase.getAliases()) {
+                    if (alias.equalsIgnoreCase(string)) {
+                        return subCommandBase;
+                    }
+                }
             }
         }
         return null;

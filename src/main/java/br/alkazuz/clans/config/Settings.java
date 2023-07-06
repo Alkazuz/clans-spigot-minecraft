@@ -10,6 +10,8 @@ public class Settings {
     public static String MYSQL_DATABASE;
     public static String MYSQL_USER;
     public static String MYSQL_PASSWORD;
+    public static int CLAN_PRICE;
+    public static int MAX_CLAN_MEMBERS;
 
     public static void load() {
         try {
@@ -17,8 +19,10 @@ public class Settings {
             MYSQL_ENABLED = config.getBoolean("MySQL.enabled");
             MYSQL_HOST = config.getString("MySQL.host");
             MYSQL_DATABASE = config.getString("MySQL.database");
-            MYSQL_USER = config.getString("MySQL.user");
+            MYSQL_USER = config.getString("MySQL.username");
             MYSQL_PASSWORD = config.getString("MySQL.password");
+            CLAN_PRICE = config.getInt("price");
+            MAX_CLAN_MEMBERS = config.getInt("max-members");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -14,6 +14,24 @@ public class PlayerClanJoinEvent extends Event implements Cancellable {
     private ClanPlayer clanPlayer;
     private Clan clan;
 
+    public PlayerClanJoinEvent(Player player, ClanPlayer clanPlayer, Clan clan) {
+        this.player = player;
+        this.clanPlayer = clanPlayer;
+        this.clan = clan;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public void setClanPlayer(ClanPlayer clanPlayer) {
+        this.clanPlayer = clanPlayer;
+    }
+
+    public void setClan(Clan clan) {
+        this.clan = clan;
+    }
+
     @Override
     public HandlerList getHandlers() {
         return handlers;

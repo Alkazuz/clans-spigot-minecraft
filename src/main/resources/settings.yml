@@ -1,3 +1,5 @@
+price: 50000
+max-members: 20
 MySQL:
   enabled: false
   host: localhost

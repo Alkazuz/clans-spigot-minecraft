@@ -20,6 +20,7 @@ repositories {
 dependencies {
     implementation files('C:\\Users\\Marcos\\Documents\\Plugin\\spigot-1.5.2-R1.1-SNAPSHOT.jar')
     implementation files('C:\\Users\\Marcos\\Documents\\Plugin\\Vault.jar')
+    implementation files('C:\\Users\\Marcos\\Documents\\Plugin\\Servidor\\plugins\\Core-1.0-SNAPSHOT.jar')
 }
 
 def targetJavaVersion = 8

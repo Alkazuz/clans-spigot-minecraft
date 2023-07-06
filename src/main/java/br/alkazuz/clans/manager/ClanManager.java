@@ -63,9 +63,11 @@ public class ClanManager {
             ResultSet res = database.select("SELECT * FROM `clans`;");
             while (res.next()) {
                 Clan clan = new Clan(res.getString("tag"), res.getString("name"));
+                clan.id = res.getInt("id");
                 clan.setColor(WoolColors.valueOf(res.getString("color")));
                 clan.setOwner(res.getString("owner"));
-                clan.setHome(LocationUtils.decodeLocation(res.getString("home")));
+                if (res.getString("home") != null)
+                    clan.setHome(LocationUtils.decodeLocation(res.getString("home")));
                 clan.setBalance(res.getDouble("balance"));
                 clan.setCreatedAt(res.getTimestamp("created_at"));
                 clan.setFriendlyFire(res.getBoolean("friendly_fire"));
@@ -104,4 +106,7 @@ public class ClanManager {
         }
     }
 
+    public static boolean clanTagExists(String clanTag) {
+        return clans.containsKey(clanTag);
+    }
 }

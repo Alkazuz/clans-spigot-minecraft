@@ -1,5 +1,8 @@
 package br.alkazuz.clans.command;
 
+import br.alkazuz.clans.gui.GuiInventory;
+import br.alkazuz.clans.manager.ClanPlayerManager;
+import br.alkazuz.clans.objects.ClanPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,9 +17,13 @@ public class CommandClan implements CommandExecutor {
             return true;
         }
         Player player = (Player) commandSender;
-
+        ClanPlayer clanPlayer = ClanPlayerManager.getClanPlayer(player.getName());
         if (strings.length == 0) {
-            //GuiInventory.openMain(player);
+            if (clanPlayer.getClan() == null) {
+                GuiInventory.openNoClan(player);
+            } else {
+                GuiInventory.openClan(player, clanPlayer);
+            }
             return true;
         }
 
@@ -25,11 +32,19 @@ public class CommandClan implements CommandExecutor {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("§cComando não encontrado.\n");
             for (SubCommandBase subCommandBase1 : SubCommands.getSubCommands()) {
-                if (player.hasPermission(subCommandBase1.getPermission())) {
-                    stringBuilder.append("§f/terreno ").append(subCommandBase1.getName()).append(" §7- ").append(subCommandBase1.getDescription()).append("\n");
+                String errorMessage = subCommandBase1.errorExecute(player);
+                if (errorMessage != null) {
+                    continue;
                 }
+                stringBuilder.append(subCommandBase.getHelpMessage() + "\n");
             }
             player.sendMessage(stringBuilder.toString());
+            return true;
+        }
+
+        String errorMessage = subCommandBase.errorExecute(player);
+        if (errorMessage != null) {
+            player.sendMessage(errorMessage);
             return true;
         }
 
